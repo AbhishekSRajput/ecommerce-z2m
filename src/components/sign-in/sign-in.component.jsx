@@ -5,9 +5,10 @@ import CustomButton from '../custom-button/custom-button.component';
 
 import './sign-in.styles.scss';
 
+
 class SignIn extends React.Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+    super(props); 
 
     this.state = {
       email: '',
@@ -22,6 +23,7 @@ class SignIn extends React.Component {
   };
 
   handleChange = event => {
+  
     const { value, name } = event.target;
 
     this.setState({ [name]: value });
