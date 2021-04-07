@@ -15,18 +15,34 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
+//we use the userAuth object
 export const createUserProfileDocument = async (userAuth, additionalData) => {
 	if (!userAuth) return;
-
+	//to query 	our database for a document reference object
 	const userRef = firestore.doc(`users/${userAuth.uid}`);
-
+	//document reference
+	//using the userRef we will call .get to get the SnapShot object
+	//remember even if we do not have user object in the database
+	//firebase will always give us the snapShot object
+	//because using it we will check whether or not it exist or not
+	//with.exists property
+	const collectionRef = firestore.collection('users');
+	//collection reference
+	//users if only existing collection in firestore
 	const snapShot = await userRef.get();
+	const collectionSnapShot = await collectionRef.get();
+	console.log(collectionSnapShot);
 
+	//if snapshot object does not exist
 	if (!snapShot.exists) {
 		const { displayName, email } = userAuth;
 		const createdAt = new Date();
+		//then we want to create a new document
+		//object inside of our userRef
 		try {
+			//.set() means create a new document
+			//using this object with all these properties on it
+			//inside of our dataBase
 			await userRef.set({
 				displayName,
 				email,
