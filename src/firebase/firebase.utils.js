@@ -18,7 +18,7 @@ firebase.initializeApp(firebaseConfig);
 //we use the userAuth object
 export const createUserProfileDocument = async (userAuth, additionalData) => {
 	if (!userAuth) return;
-	//to query 	our database for a document reference object
+	//to query our database for a document reference object
 	const userRef = firestore.doc(`users/${userAuth.uid}`);
 	//document reference
 	//using the userRef we will call .get to get the SnapShot object
@@ -56,6 +56,42 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
 	return userRef;
 };
+
+//firestore data function
+//we're getting array back and we wanna convert it to the object
+export const convertCollectionSnapshotToMap = (collections) => {
+	const transformedCollection = collections.docs.map((doc) => {
+		const { title, items } = doc.data();
+
+		return {
+			routeName: encodeURI(title.toLowerCase()),
+			id: doc.id,
+			title,
+			items,
+		};
+	});
+	transformedCollection.reduce((accumulator, collection) => {
+		accumulator[collection.title.toLowerCase()] = collection;
+		return accumulator;
+	}, {});
+};
+
+//can be used to make new collection
+
+// export const addCollectionAndDocuments = async (
+// 	collectionKey,
+// 	objectsToAdd
+// ) => {
+// 	const collectionRef = firestore.collection(collectionKey);
+
+// 	const batch = firestore.batch();
+// 	objectsToAdd.forEach((obj) => {
+// 		const newDocRef = collectionRef.doc();
+// 		batch.set(newDocRef, obj);
+// 	});
+
+// 	return await batch.commit();
+// };
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
