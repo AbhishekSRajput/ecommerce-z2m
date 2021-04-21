@@ -8,6 +8,7 @@
         "ecommerce",
         "firebaseapp",
         "firestore",
+        "middlewares",
         "persistor",
         "signin",
         "womens"
